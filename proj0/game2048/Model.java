@@ -1,5 +1,6 @@
 package game2048;
 
+import javax.swing.*;
 import java.util.Formatter;
 import java.util.Observable;
 
@@ -114,12 +115,105 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        board.setViewingPerspective(side);
+        for (int col = 0; col < board.size(); col++) {
+            for (int row = board.size() - 1; row >= 0; row--){
+                Tile tile = board.tile(col, row);
+                int nextRow = nextNonNullTileRow(col, row);
+                if (nextRow == -1) {
+                    break;
+                }
+                Tile nextTile = board.tile(col, nextRow);
+                if (tile == null || tile.value() == nextTile.value()) {
+                    changed = true;
+                    if (board.move(col, row, nextTile)) {
+                        score += 2 * nextTile.value();
+                    } else {
+                        row++; // After executing the loop body, it will do row-- first, then check row >= 0
+                    }
+                }
+            }
+        }
+        board.setViewingPerspective(Side.NORTH);
+
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
     }
+
+    private int nextNonNullTileRow(int col, int row) {
+        for (int pos = row - 1; pos >= 0; pos--) {
+            if (board.tile(col, pos) != null) {
+                return pos;
+            }
+        }
+        return -1;
+    }
+
+// Below is my code, it works only when side is NORTH, i don't know why
+// Seems like the recursion is somehow wrong
+
+//        board.setViewingPerspective(side);
+//
+//        int size = board.size();
+//        int originalSize = size;
+//        for (int col = 0; col < size; col += 1) {
+//            for (int row = size - 1; row >= 0; row -= 1) {
+//                if (board.tile(col, row) != null) {
+//                    Tile t = board.tile(col, row);
+//                    int originalScore = this.score;
+//                    int validMoveCount = moveTileToDestination(size, col, t, 0);
+//                    changed = (validMoveCount != 0) || changed;
+//
+//                    boolean scoreChanged = (this.score != originalScore);
+//                    if (scoreChanged) {
+//                        size -= 1;
+//                    }
+//                }
+//            }
+//            size = originalSize;
+//        }
+//
+//        board.setViewingPerspective(Side.NORTH);
+//
+//        checkGameOver();
+//        if (changed) {
+//            setChanged();
+//        }
+//        return changed;
+//    }
+//
+//    public int moveTileToDestination(int size, int col, Tile t, int validMoveCount) {
+//        int row = t.row();
+//        int value = t.value();
+//
+//        boolean isLastRow = (row == size - 1);
+//        boolean isNextRowUnavailable = (row < size - 1)
+//                                            && (board.tile(col, row + 1) != null)
+//                                                && (board.tile(col, row+ 1).value() != value);
+//
+//        if (isLastRow || isNextRowUnavailable) {
+//            board.move(col, row, t);
+//            return validMoveCount;
+//        } else {
+//            boolean isAMerge = board.move(col, row + 1, t);
+//            if (isAMerge) {
+//                renewScore(value);
+//                return validMoveCount + 1;
+//            } else {
+//                Tile nextTile = board.tile(col, row + 1);
+//                return moveTileToDestination(size, col, nextTile, validMoveCount + 1);
+//            }
+//        }
+//    }
+//
+//
+//    public void renewScore(int value) {
+//        this.score = this.score + value * 2;
+//    }
+//
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
@@ -138,6 +232,14 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        int size = b.size();
+        for (int col = 0; col < size; col += 1) {
+            for (int row = 0; row < size; row += 1) {
+                if (b.tile(col, row) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +250,14 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        int size = b.size();
+        for (int col = 0; col < size; col += 1) {
+            for (int row = 0; row < size; row += 1) {
+                if (b.tile(col, row) != null && b.tile(col, row).value() == MAX_PIECE) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -159,6 +269,42 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        boolean emptyExists = emptySpaceExists(b);
+        if (emptyExists) {
+            return true;
+            }
+
+        for (int col = 0; col < b.size(); col += 1) {
+            for (int row = 0; row < b.size(); row += 1) {
+                boolean adjacentSameExists = adjacentSameValue(b, col, row);
+                if (adjacentSameExists) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean adjacentSameValue(Board b, int col, int row) {
+        if ((col == b.size() - 1) && (row == b.size() - 1)) {
+            return false;
+        }
+        if (row == b.size() - 1) {
+            if (b.tile(col, row).value() == b.tile(col + 1, row).value()) {
+                return true;
+            }
+            return false;
+        }
+        if (col == b.size() - 1) {
+            if (b.tile(col, row).value() == b.tile(col, row + 1).value()) {
+                return true;
+            }
+            return false;
+        }
+        if ((b.tile(col, row).value() == b.tile(col, row + 1).value())
+                || (b.tile(col, row).value() == b.tile(col + 1, row).value())) {
+            return true;
+        }
         return false;
     }
 

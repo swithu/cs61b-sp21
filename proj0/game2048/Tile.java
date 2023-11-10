@@ -33,7 +33,7 @@ public class Tile {
     /** Return my next state.  Before I am moved or merged, I am my
      *  own successor. */
     public Tile next() {
-        return next == null ? this : next;
+        return next == null ? this : next; // If I've reached the end of the sequence (next is null), then return myself. Else return that next one
     }
 
     /** Return a new tile at (ROW, COL) with value VALUE. */
@@ -44,15 +44,15 @@ public class Tile {
     /** Return the result of moving me to (COL, ROW). */
     public Tile move(int col, int row) {
         Tile result = new Tile(value, col, row);
-        next = result;
+        next = result; // Set a new tile at position(col, row) as a result of moving tile to that position
         return result;
     }
 
     /** Return the result of merging OTHERTILE with me after moving to
      *  (COL, ROW). */
     public Tile merge(int col, int row, Tile otherTile) {
-        assert value == otherTile.value();
-        next = otherTile.next = new Tile(2 * value, col, row);
+        assert value == otherTile.value(); // Merge if the position we moving to has a tile already with the same value
+        next = otherTile.next = new Tile(2 * value, col, row); // NEXT = merged tile
         return next;
     }
 
