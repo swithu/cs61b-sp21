@@ -1,43 +1,78 @@
 package deque;
 
+
+import java.util.Iterator;
+
 /** Deque powered by an Array. */
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private T[] items;
     private static int size;
 
     public ArrayDeque() {
-        items = new (T[]) Object[8]
+        items = (T[]) new Object[8];
+    }
+
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<T> {
+        public T next() {
+            return null;
+        }
+
+        public boolean hasNext() {
+            return false;
+        }
     }
 
     /** Adds an item of type T to the front of the deque. */
-    void addFirst(T item);
+    public void addFirst(T item) {
+        return;
+    }
 
     /** Adds an item of type T to the end of the deque. */
-    void addLast(T item);
+    public void addLast(T item) {
+        return;
+    }
 
     /** Returns TRUE if deque is empty, FALSE otherwise. */
-    boolean isEmpty();
+    public boolean isEmpty() {
+        return false;
+    }
 
     /** Returns the number of items in the deque. */
-    int size();
+    public int size() {
+        return 0;
+    }
 
     /** Prints the items in the deque from first to last, separated by a space.
      *  Once all the items have been printed, prints out a new line. */
-    void printDeque();
+    public void printDeque() {
+        return;
+    }
 
     /** Removes and returns the item at the front of the deque.
      *  If no such item exists, returns NULL. */
-    T removeFirst();
+    public T removeFirst() {
+        return null;
+    }
 
     /** Removes and returns the item at the back of the deque.
      *  If no such item exists, returns NULL. */
-    T removeLast();
+    public T removeLast() {
+        return null;
+    }
 
     /** Gets the item at the given index, where 0 is the front,
      *  1 is the next item and so forth.
      *  If no such item exists, returns NULL. */
-    T get(int index);
+    public T get(int index) {
+        return null;
+    }
 
     /** Returns whether or not the parameter o is equal to the Deque. */
-    boolean equals(Object o);
+    public boolean equals(Object o) {
+        return false;
+    }
 }

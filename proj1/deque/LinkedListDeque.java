@@ -2,14 +2,19 @@ package deque;
 
 import java.util.Iterator;
 
-/** Deque powered by a Doubly Linked List. */
+/**
+ * Deque powered by a Doubly Linked List.
+ * Iterating over the LinkedListDeque using a for-each loop should
+ * take time proportional to the number of items.
+ */
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
-    /** Class of Node, which is the element of Link List. */
+    /** Class of Node, which is an element of Link List. */
     private class Node {
         public Node prev;
         public T item;
         public Node next;
 
+        /** Constructor of Node class. */
         public Node(Node p, T i, Node n) {
             prev = p;
             item = i;
@@ -17,17 +22,26 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    /** Fields of Linked List. */
+
+    // Below are fields of Linked List.
     private static int size;
 
-    /** The first new item will be added to SENTINEL.NEXT.
-     *  SENTINEL.PREV points at the last Node.
-     *  The last Node.NEXT points back at the SENTINEL Node. */
+    /**
+     * The first new item will be added to SENTINEL.NEXT.
+     * SENTINEL.PREV points at the last node.
+     * NODE.NEXT of the last node points back at the SENTINEL node.
+     * i.e.
+     * the last node <-- prev | SENTINEL | next --> new node
+     * ... <-- prev | THE LAST NODE | next --> sentinel
+     */
     private Node sentinel;
 
     /** Creates an empty Linked List. */
     public LinkedListDeque() {
         sentinel = new Node(null, null, null);
+
+        /* When a linked list is empty, it should be like:
+         * sentinel itself <-- prev | SENTINEL | next --> sentinel itself */
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
         size = 0;
@@ -40,18 +54,26 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         size = 1;
     }
 
-    /** Add an item of type T to the front of the deque. */
+    /**
+     * Add an item of type T to the front of the deque.
+     * It should take constant time.
+     */
     public void addFirst(T item) {
         sentinel.next = new Node(sentinel, item, sentinel.next);
-        // Adds pointer from second first NODE to new first NODE
+
+        /* Adds pointer from second first NODE to new first NODE. */
         sentinel.next.next.prev = sentinel.next;
         size++;
     }
 
-    /** Add an item of type T to the end of the deque. */
+    /**
+     * Add an item of type T to the end of the deque.
+     * It should take constant time.
+     */
     public void addLast(T item) {
         sentinel.prev = new Node(sentinel.prev, item, sentinel);
-        // Adds pointer from second last NODE to new last NODE
+
+        /* Adds pointer from second last NODE to new last NODE. */
         sentinel.prev.prev.next = sentinel.prev;
         size++;
     }
@@ -66,8 +88,9 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return size;
     }
 
-    /** Print the items in the deque from first to last, separated by a space.
-     *  Once all the items have been printed, print out a new line.
+    /**
+     * Print the items in the deque from first to last, separated by a space.
+     * Once all the items have been printed, print out a new line.
      */
     public void printDeque() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -79,8 +102,9 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         System.out.println(' ');
     }
 
-    /** Remove and return the item at the front of the deque.
-     *  If no such item exists, return NULL.
+    /**
+     * Remove and return the item at the front of the deque.
+     * If no such item exists, return NULL.
      */
     public T removeFirst() {
         if (isEmpty()) {
@@ -105,8 +129,9 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    /** Remove and return the item at the back of the deque.
-     *  If no such item exists, return NULL.
+    /**
+     * Remove and return the item at the back of the deque.
+     * If no such item exists, return NULL.
      */
     public T removeLast() {
         if (isEmpty()) {
@@ -131,9 +156,11 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    /** Gets the item at the given index, where 0 is the front,
-     *  1 is the next item and so forth.
-     *  If no such item exists, return NULL.
+    /**
+     * Gets the item at the given index using iteration,
+     * where 0 is the front,
+     * 1 is the next item and so forth.
+     * If no such item exists, return NULL.
      */
     public T get(int index) {
         // Creates a pointer pointing at sentinel
@@ -151,17 +178,20 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             }
         }
         T returnItem = pointer.item;
+
         // Kills the pointer in case we need to remove that NODE later
         pointer = null;
         return returnItem;
     }
 
-    /** Determines whether to retrieve an item from the front or back
-     *  of the deque based on the index.
-     *  If the index is less than half the size of the deque,
-     *  it is more efficient to retrieve from the front.
-     *  Otherwise, retrieval from the back is more efficient. */
-    public boolean isIndexInFirstHalf(int index) {
+    /**
+     * Determines whether to retrieve an item from the front or back
+     * of the deque based on the index.
+     * If the index is less than half the size of the deque,
+     * it is more efficient to retrieve from the front.
+     * Otherwise, retrieval from the back is more efficient.
+     */
+    private boolean isIndexInFirstHalf(int index) {
         int halfSize = size / 2;
         return (index < halfSize);
     }
@@ -178,14 +208,16 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
+    /** Recurse to targetIndex throughout a LinkedListDeque from the front of that list. */
     private T getRecursiveFromFront(int targetIndex, Node currentNode) {
         if (targetIndex == 0) {
             return currentNode.item;
         } else {
-            return getRecursiveFromFront(targetIndex -1, currentNode.next);
+            return getRecursiveFromFront(targetIndex - 1, currentNode.next);
         }
     }
 
+    /** Recurse to targetIndex throughout a LinkedListDeque from the back of that list. */
     private T getRecursiveFromBack(int targetIndex, Node currentNode) {
         if (targetIndex == 0) {
             return currentNode.item;
@@ -197,6 +229,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     /** Return whether the parameter o is equal to the Deque. */
     @Override
     public boolean equals(Object o) {
+        // If they are the same object
         if (this == o) {
             return true;
         }
@@ -237,8 +270,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         private int position;
         private Node pointer;
 
-        /** Sets a pointer that starts at the first item,
-         *  counts the current position as index 0. */
+        /**
+         * Sets a pointer that starts at the first item,
+         * counts the current position as index 0.
+         */
         public LinkedListIterator() {
             position = 0;
             pointer = sentinel.next;

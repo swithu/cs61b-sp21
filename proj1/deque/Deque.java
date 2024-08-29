@@ -31,6 +31,6 @@ public interface Deque<T> {
      *  If no such item exists, returns NULL. */
     T get(int index);
 
-    /** Returns whether or not the parameter o is equal to the Deque. */
+    /** Returns whether the parameter o is equal to the Deque. */
     boolean equals(Object o);
 }
