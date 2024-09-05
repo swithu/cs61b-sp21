@@ -55,7 +55,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /**
-     * Add an item of type T to the front of the deque.
+     * Adds an item of type T to the front of the deque.
      * It should take constant time.
      */
     public void addFirst(T item) {
@@ -67,7 +67,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /**
-     * Add an item of type T to the end of the deque.
+     * Adds an item of type T to the end of the deque.
      * It should take constant time.
      */
     public void addLast(T item) {
@@ -78,19 +78,19 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         size++;
     }
 
-    /** Return TRUE if deque is empty, FALSE otherwise. */
+    /** Returns TRUE if deque is empty, FALSE otherwise. */
     public boolean isEmpty() {
         return (size == 0);
     }
 
-    /** Return the number of items in the deque. */
+    /** Returns the number of items in the deque. */
     public int size() {
         return size;
     }
 
     /**
-     * Print the items in the deque from first to last, separated by a space.
-     * Once all the items have been printed, print out a new line.
+     * Prints the items in the deque from first to last, separated by a space.
+     * Once all the items have been printed, prints out a new line.
      */
     public void printDeque() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -103,8 +103,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /**
-     * Remove and return the item at the front of the deque.
-     * If no such item exists, return NULL.
+     * Removes and returns the item at the front of the deque.
+     * If no such item exists, returns NULL.
      */
     public T removeFirst() {
         if (isEmpty()) {
@@ -130,8 +130,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /**
-     * Remove and return the item at the back of the deque.
-     * If no such item exists, return NULL.
+     * Removes and returns the item at the back of the deque.
+     * If no such item exists, returns NULL.
      */
     public T removeLast() {
         if (isEmpty()) {
@@ -196,7 +196,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return (index < halfSize);
     }
 
-    /** Same as GET method, but using a recursion approach. */
+    /** Same as GET method, but uses recursion approach. */
     public T getRecursive(int index) {
         if (index < 0 || index >= size) {
             return null;
@@ -208,7 +208,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    /** Recurse to targetIndex throughout a LinkedListDeque from the front of that list. */
+    /** Recurses to targetIndex throughout a LinkedListDeque from the front of that list. */
     private T getRecursiveFromFront(int targetIndex, Node currentNode) {
         if (targetIndex == 0) {
             return currentNode.item;
@@ -217,7 +217,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    /** Recurse to targetIndex throughout a LinkedListDeque from the back of that list. */
+    /** Recurses to targetIndex throughout a LinkedListDeque from the back of that list. */
     private T getRecursiveFromBack(int targetIndex, Node currentNode) {
         if (targetIndex == 0) {
             return currentNode.item;
@@ -226,7 +226,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    /** Return whether the parameter o is equal to the Deque. */
+    /** Returns whether the parameter o is equal to the Deque. */
     @Override
     public boolean equals(Object o) {
         // If they are the same object
