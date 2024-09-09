@@ -30,10 +30,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         items = (T[]) new Object[capacity];
         size = 0;
 
-        // First time using addFirst, item should be added to index 0
+        /*
+         * When array is empty, the first item will be added to index 0,
+         * no matter it is addFirst or addLast.
+         */
         nextFirst = 0;
-        // First time using addNext, item should be added to index 1
-        nextLast = 1;
+        nextLast = 0;
     }
 
     /** For making ArrayDeque iterable. */
@@ -75,39 +77,43 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      *            back        front
      */
     public void addFirst(T item) {
-        int newSize = size + 1;
-        if (shouldResize(newSize)) {
+        // Check whether the array needs to resize
+        int afterSize = size + 1;
+        if (shouldResize(afterSize)) {
             // Expands the array to double the capacity
             int newCapacity = capacity * 2;
             resize(newCapacity);
-
-            // Resets the pointers after a resizing
-            nextFirst = newCapacity - 1;
-            nextLast = size;
-            front = 0;
-            back = size - 1;
         }
+
         items[nextFirst] = item;
-        front = nextFirst;
-
-        // First time calling addFirst will make front at index 0
-        if (front == 0) {
-            // nextFirst should loop back around to the end of the array
-            nextFirst = capacity - 1;
-        } else {
-            /*
-             * After first time calling addFirst,
-             * the nextFirst already looped back around,
-             * so simply moves it one index left.
-             */
-            nextFirst -= 1;
-        }
         size += 1;
+
+        // Reset pointers
+        // Code below works no matter the front has looped back around or not.
+        front = nextFirst;
+        nextFirst = (front - 1 + capacity) % capacity; // Writing (front - 1) % capacity will bug when front == 0
+        back = (front + size - 1) % capacity;
+        nextLast = (back + 1) % capacity;
     }
 
-    /** Adds an item of type T to the end of the deque. */
+    /** Adds an item of type T to position nextLast. */
     public void addLast(T item) {
-        return;
+        // Check if resize is needed
+        int afterSize = size + 1;
+        if (shouldResize(afterSize)) {
+            // Expands the array to double the capacity
+            int newCapacity = capacity * 2;
+            resize(newCapacity);
+        }
+
+        items[nextLast] = item;
+        size += 1;
+
+        // Reset pointers
+        back = nextLast;
+        nextLast = (back + 1) % capacity;
+        front = (back - size + 1 + capacity) % capacity;
+        nextFirst = (front - 1 + capacity) % capacity;
     }
 
     /**
@@ -120,15 +126,15 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * bring the number of elements in the array under 25% the length
      * of the array, you should resize the size of the array down.
      *
-     * newSize is the size of items after performing a remove or
+     * afterSize is the size of items after performing a remove or
      * add operation.
      *
-     * newSize > capacity may occur after an adding.
+     * afterSize > capacity may occur after an adding.
      * usageFactor < 0.25 may occur after a removing.
      */
-    private boolean shouldResize(int newSize) {
-        usageFactor = (float) newSize / capacity;
-        return (capacity > 16 && usageFactor < 0.25) || newSize > capacity;
+    private boolean shouldResize(int afterSize) {
+        usageFactor = (float) afterSize / capacity;
+        return (capacity > 16 && usageFactor < 0.25) || afterSize > capacity;
     }
 
     /** Resize the array to a new capacity. */
@@ -139,31 +145,33 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
          */
         T[] newArray = (T[]) new Object[newCapacity];
 
-        // TODO: Should i check isEmpty here?
         /*
-         * Front is at 0 if no addFirst has been called, i.e. only addLast.
+         * It works wherever the front is.
+         *
          * e.g.
-         * array: [a, b, c ,d, e]
+         * array: [a, b, c ,d, e, f, g, h]
          * index: 0  1  2  3  4  5  6  7
-         * items: a  b  c  d  e
-         *      front        back
+         * items: a  b  c  d  e  f  g  h
+         *      front                 back
+         *
+         * array: [d, c, a, b, e, f, g, h]
+         * index: 0  1  2  3  4  5  6  7
+         * items: a  b  e  f  g  h  d  c
+         *                     back front
          */
-        if (front == 0) {
-            System.arraycopy(items, front, newArray, 0, size - 1);
-        } else {
-            /*
-             * addFirst has been called.
-             * e.g.
-             * array: [d, c, a, b, e]
-             * index: 0  1  2  3  4  5  6  7
-             * items: a  b  e           d  c
-             *             back       front
-             */
-            System.arraycopy(items, front, newArray, 0, capacity - front);
-            System.arraycopy(items, 0, newArray, capacity - front, back + 1);
-        }
+        System.arraycopy(
+                items, front, newArray, 0, capacity - front);
+        System.arraycopy(
+                items, 0, newArray, capacity - front, (front + size) % capacity);
+
         items = newArray;
         capacity = newCapacity;
+
+        // Resets the pointers after a resizing
+        front = 0;
+        back = size - 1;
+        nextFirst = capacity - 1; // When front is at index 0, nextFirst loops back around
+        nextLast = size;
     }
 
     /** Returns TRUE if deque is empty, FALSE otherwise. */

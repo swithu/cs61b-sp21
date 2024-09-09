@@ -7,9 +7,10 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/** Test for ArrayDeque class. */
 public class MyArrayDequeTest {
 
-    /** Test ArrayDeque.addFirst in a small number of items. */
+    /** Test addFirst using a small amount of items. */
     @Test
     public void testAddFirstSmall() {
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
@@ -27,7 +28,7 @@ public class MyArrayDequeTest {
         }
     }
 
-    /** Test ArrayDeque.addFirst in a large number of items. */
+    /** Test addFirst using a large amount of items. */
     @Test
     public void testAddFirstLarge() {
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
@@ -44,5 +45,44 @@ public class MyArrayDequeTest {
             assertEquals(ad1.get(i), ad2.get(i));
         }
     }
+
+    /** Test addLast using a small amount of items. */
+    @Test
+    public void testAddLastSmall() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        for (int i = 0; i < 5; i++) {
+            ad1.addLast(i);
+        }
+
+        List<Integer> ad2 = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            ad2.add(i);
+        }
+
+        for (int i = 0; i < 5; i++) {
+            assertEquals(ad1.get(i), ad2.get(i));
+        }
+    }
+
+
+    /** Test addLast using a large amount of items. */
+    @Test
+    public void testAddLastLarge() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        for (int i = 0; i < 10000; i++) {
+            ad1.addLast(i);
+        }
+
+        List<Integer> ad2 = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            ad2.add(i);
+        }
+
+        for (int i = 0; i < 10000; i++) {
+            assertEquals(ad1.get(i), ad2.get(i));
+        }
+    }
+
+    // TODO: Test that Generate type of items can be added
 
 }
