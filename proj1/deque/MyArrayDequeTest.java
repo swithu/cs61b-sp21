@@ -1,5 +1,6 @@
 package deque;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class MyArrayDequeTest {
         for (int i = 0; i < 5; i++) {
             assertEquals(ad1.get(i), ad2.get(i));
         }
+
+        ad1.printDeque();
     }
 
     /** Test addFirst using a large amount of items. */
@@ -44,6 +47,8 @@ public class MyArrayDequeTest {
         for (int i = 0; i < 10000; i++) {
             assertEquals(ad1.get(i), ad2.get(i));
         }
+
+        ad1.printDeque();
     }
 
     /** Test addLast using a small amount of items. */
@@ -62,6 +67,8 @@ public class MyArrayDequeTest {
         for (int i = 0; i < 5; i++) {
             assertEquals(ad1.get(i), ad2.get(i));
         }
+
+        ad1.printDeque();
     }
 
 
@@ -81,6 +88,28 @@ public class MyArrayDequeTest {
         for (int i = 0; i < 10000; i++) {
             assertEquals(ad1.get(i), ad2.get(i));
         }
+
+        ad1.printDeque();
+    }
+
+    /** adds a few things to array, checking isEmpty() and size() are correct. */
+    @Test
+    public void addIsEmptySizeTest() {
+        ArrayDeque<String> ad1 = new ArrayDeque<>();
+
+        assertTrue(ad1.isEmpty());
+
+        ad1.addFirst("a");
+        assertEquals(1, ad1.size());
+        assertFalse(ad1.isEmpty());
+
+        ad1.addLast("b");
+        assertEquals(2, ad1.size());
+
+        ad1.addLast("c");
+        assertEquals(3, ad1.size());
+
+        ad1.printDeque();
     }
 
     // TODO: Test that Generate type of items can be added

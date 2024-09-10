@@ -1,6 +1,8 @@
 package deque;
 
 
+import org.hamcrest.internal.ArrayIterator;
+
 import java.util.Iterator;
 
 /** Deque powered by an Array. */
@@ -19,7 +21,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int nextLast;
 
     /*
-     * Tracks the positions of the front and back of an array.
+     * Tracks the front and back positions in an array.
      * Mainly for remove methods.
      */
     private int front;
@@ -31,7 +33,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         size = 0;
 
         /*
-         * When array is empty, the first item will be added to index 0,
+         * When an array is empty, the first item will be added to index 0,
          * no matter it is addFirst or addLast.
          */
         nextFirst = 0;
@@ -43,13 +45,22 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         return new ArrayDequeIterator();
     }
 
+    /** Iterator class for ArrayDeque. */
     private class ArrayDequeIterator implements Iterator<T> {
+        private int pointer;
+
+        public ArrayDequeIterator() {
+            pointer = 0;
+        }
+
         public T next() {
-            return null;
+            T returnItem = items[pointer];
+            pointer += 1;
+            return returnItem;
         }
 
         public boolean hasNext() {
-            return false;
+            return pointer < size();
         }
     }
 
@@ -58,7 +69,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * Since here using a circular array approach, the new front
      * is looping back around to the end of the array.
      *
-     * e.g.
+     * E.g.
      * array: [a, b, c]
      * index: 0  1  2  3  4  5  6  7
      * items: a  b  c
@@ -98,7 +109,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     /** Adds an item of type T to position nextLast. */
     public void addLast(T item) {
-        // Check if resize is needed
+        // Check if resize is necessary
         int afterSize = size + 1;
         if (shouldResize(afterSize)) {
             // Expands the array to double the capacity
@@ -117,7 +128,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /**
-     * Check if array needs to resize before adding or removing item.
+     * Check if an array needs to resize before adding or removing item.
      * If an array is full of items,i.e. size == capacity,
      * then it needs to expand.
      * Besides, for arrays of length 16 or more, the usage factor
@@ -185,11 +196,20 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /**
-     * Prints the items in the deque from first to last, separated by a space.
+     * Prints the items in the deque from front to back, separated by a space.
      * Once all the items have been printed, prints out a new line.
      */
     public void printDeque() {
-        return;
+        StringBuilder SB = new StringBuilder();
+
+        int pointer = front;
+        for (int i = 0; i < size(); i++) {
+            SB.append(items[pointer]);
+            SB.append(' ');
+            pointer = (pointer + 1) % capacity;
+        }
+        System.out.println(SB.toString().trim());
+        System.out.println(' ');
     }
 
     /** Removes and returns the item at the front of the deque.
@@ -234,7 +254,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         return items[actualIndex];
     }
 
-    /** Returns whether or not the parameter o is equal to the Deque. */
+    /** Returns whether the parameter o is equal to the Deque. */
     public boolean equals(Object o) {
         return false;
     }
