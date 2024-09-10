@@ -1,6 +1,6 @@
 package deque;
 
-import org.checkerframework.checker.units.qual.A;
+import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -177,8 +177,61 @@ public class MyArrayDequeTest {
         }
     }
 
+    /** Tests adding, removing and resizing in randomized calls. */
+    @Test
+    public void randomizedTest() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        List<Integer> std = new ArrayList<>(); // Sets an ArrayList as standard
 
+        int N = 500000;
+        for (int i = 0; i < N; i++) {
+            int ope = StdRandom.uniform(0, 4);
+            int randVal = StdRandom.uniform(0, 100);
 
-    // TODO: Test that Generate type of items can be added
+            if (ope == 0) {
+                // addFirst
+                ad1.addFirst(randVal);
+                std.add(0, randVal); // An ArrayList has add(0, item) to mimic addFirst
+                assertEquals(ad1.size(), std.size());
+                System.out.println("addFirst(" + randVal + ")");
+            } else if (ope == 1) {
+                // addLast
+                ad1.addLast(randVal);
+                std.add(randVal); // Uses add(item) to mimic addLast
+                assertEquals(ad1.size(), std.size());
+                System.out.println("addLast(" + randVal + ")");
+            } else if (ope == 2 && !std.isEmpty()) { // Will get into NullPointerError without this [&& std.size() > 0]
+                // removeFirst
+                int firstInAd1 = ad1.removeFirst();
+                int firstInStd = std.remove(0); // Uses remove(0) to mimic removeFirst
+                assertEquals(ad1.size(), std.size());
+                assertEquals(firstInAd1, firstInStd);
+                System.out.println("removeFirst(" + firstInAd1 + ")");
+            } else if (ope == 3 && !std.isEmpty()) { // Will get into NullPointerError without this [&& std.size() > 0]
+                // removeLast
+                int lastInAd1= ad1.removeLast();
+                int lastInStd = std.remove(std.size() - 1); // Uses remove(size - 1) to mimic removeLast
+                assertEquals(ad1.size(), std.size());
+                assertEquals(lastInAd1, lastInStd);
+                System.out.println("removeFirst(" + lastInAd1 + ")");
+            }
+        }
+    }
+
+    /** Check if you can create ArrayDeque with different parameterized types*/
+    @Test
+    public void multipleParamTest() {
+        ArrayDeque<String> ad1 = new ArrayDeque<>();
+        ArrayDeque<Double> ad2 = new ArrayDeque<>();
+        ArrayDeque<Boolean> ad3 = new ArrayDeque<>();
+
+        ad1.addFirst("string");
+        ad2.addFirst(3.14159);
+        ad3.addFirst(true);
+
+        String s = ad1.removeFirst();
+        double d = ad2.removeFirst();
+        boolean b = ad3.removeFirst();
+    }
 
 }
