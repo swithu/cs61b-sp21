@@ -99,7 +99,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         items[nextFirst] = item;
         size += 1;
 
-        // Reset pointers
+        // Resets pointers
         // Code below works no matter the front has looped back around or not.
         front = nextFirst;
         nextFirst = (front - 1 + capacity) % capacity; // Writing (front - 1) % capacity will bug when front == 0
@@ -120,7 +120,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         items[nextLast] = item;
         size += 1;
 
-        // Reset pointers
+        // Resets pointers
         back = nextLast;
         nextLast = (back + 1) % capacity;
         front = (back - size + 1 + capacity) % capacity;
@@ -148,7 +148,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         return (capacity > 16 && usageFactor < 0.25) || afterSize > capacity;
     }
 
-    /** Resize the array to a new capacity. */
+    /**
+     * Resize the array to a new capacity.
+     * After resizing, the front will be put at index 0 in the new array.
+     */
     private void resize(int newCapacity) {
         /*
          * New capacity is like capacity * 2 or * 0.5,
@@ -156,24 +159,14 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
          */
         T[] newArray = (T[]) new Object[newCapacity];
 
-        /*
-         * It works wherever the front is.
-         *
-         * e.g.
-         * array: [a, b, c ,d, e, f, g, h]
-         * index: 0  1  2  3  4  5  6  7
-         * items: a  b  c  d  e  f  g  h
-         *      front                 back
-         *
-         * array: [d, c, a, b, e, f, g, h]
-         * index: 0  1  2  3  4  5  6  7
-         * items: a  b  e  f  g  h  d  c
-         *                     back front
-         */
-        System.arraycopy(
-                items, front, newArray, 0, capacity - front);
-        System.arraycopy(
-                items, 0, newArray, capacity - front, (front + size) % capacity);
+        if (front <= back) {
+            // No looping-back-around
+            System.arraycopy(items, front, newArray, 0, size);
+        } else {
+            // Has looping-back-around
+            System.arraycopy(items, front, newArray, 0, capacity - front);
+            System.arraycopy(items, 0, newArray, capacity - front, back + 1);
+        }
 
         items = newArray;
         capacity = newCapacity;
@@ -203,7 +196,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         StringBuilder SB = new StringBuilder();
 
         int pointer = front;
-        for (int i = 0; i < size(); i++) {
+        for (int i = 0; i < size; i++) {
             SB.append(items[pointer]);
             SB.append(' ');
             pointer = (pointer + 1) % capacity;
@@ -215,16 +208,51 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     /** Removes and returns the item at the front of the deque.
      *  If no such item exists, returns NULL. */
     public T removeFirst() {
-        // TODO: If an array only contains one item, then first and last should be that same item
-        // Need to check is not empty first, and use front and back to remove
+        int afterSize = size - 1;
 
-        return null;
+        if (isEmpty()) {
+            return null;
+        } else if (shouldResize(afterSize)) {
+            int newCapacity = capacity / 2;
+            resize(newCapacity);
+        }
+
+        T removedItem = items[front];
+        items[front] = null;
+        size -= 1;
+
+        // Resets pointers
+        nextFirst = front;
+        front = (front + 1) % capacity;
+        back = (front + size - 1) % capacity;
+        nextLast = (back + 1) % capacity;
+
+        return removedItem;
     }
 
     /** Removes and returns the item at the back of the deque.
      *  If no such item exists, returns NULL. */
     public T removeLast() {
-        return null;
+        int afterSize = size - 1;
+
+        if (isEmpty()) {
+            return null;
+        } else if (shouldResize(afterSize)) {
+            int newCapacity = capacity / 2;
+            resize(newCapacity);
+        }
+
+        T removedItem = items[back];
+        items[back] = null;
+        size -= 1;
+
+        // Resets pointers
+        nextLast = back;
+        back = (back - 1 + capacity) % capacity;
+        front = (back - size + 1 + capacity) % capacity;
+        nextFirst = (front - 1 + capacity) % capacity;
+
+        return removedItem;
     }
 
     /**

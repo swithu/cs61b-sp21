@@ -13,7 +13,7 @@ public class MyArrayDequeTest {
 
     /** Test addFirst using a small amount of items. */
     @Test
-    public void testAddFirstSmall() {
+    public void testAddFirstSmallTest() {
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
         for (int i = 0; i < 5; i++) {
             ad1.addFirst(i);
@@ -33,7 +33,7 @@ public class MyArrayDequeTest {
 
     /** Test addFirst using a large amount of items. */
     @Test
-    public void testAddFirstLarge() {
+    public void testAddFirstLargeTest() {
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
         for (int i = 0; i < 10000; i++) {
             ad1.addFirst(i);
@@ -53,7 +53,7 @@ public class MyArrayDequeTest {
 
     /** Test addLast using a small amount of items. */
     @Test
-    public void testAddLastSmall() {
+    public void testAddLastSmallTest() {
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
         for (int i = 0; i < 5; i++) {
             ad1.addLast(i);
@@ -74,7 +74,7 @@ public class MyArrayDequeTest {
 
     /** Test addLast using a large amount of items. */
     @Test
-    public void testAddLastLarge() {
+    public void testAddLastLargeTest() {
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
         for (int i = 0; i < 10000; i++) {
             ad1.addLast(i);
@@ -111,6 +111,73 @@ public class MyArrayDequeTest {
 
         ad1.printDeque();
     }
+
+    /** Tests adding and removing. */
+    @Test
+    public void addRemoveTest() {
+        ArrayDeque<String> ad1 = new ArrayDeque<>();
+        ad1.addLast("c");
+        ad1.addFirst("b");
+        ad1.addFirst("a");
+        ad1.addLast("d");
+        ad1.printDeque();
+        assertEquals(4, ad1.size());
+
+        assertEquals("a", ad1.removeFirst());
+        assertEquals(3, ad1.size());
+
+        assertEquals("d", ad1.removeLast());
+        assertEquals(2, ad1.size());
+
+        assertEquals("b", ad1.removeFirst());
+        assertEquals(1, ad1.size());
+
+        assertEquals("c", ad1.removeFirst());
+        assertEquals(0, ad1.size());
+
+        ad1.printDeque();
+        System.out.println("end");
+    }
+
+    /** Tests removing from an empty array. */
+    @Test
+    public void removeEmptyTest() {
+        ArrayDeque<String> ad1 = new ArrayDeque<>();
+        ad1.addLast("c");
+        ad1.addFirst("b");
+
+        ad1.removeFirst();
+        assertFalse(ad1.isEmpty());
+
+        ad1.removeLast();
+        assertTrue(ad1.isEmpty());
+
+        assertNull(ad1.removeFirst());
+        assertNull(ad1.removeLast());
+    }
+
+    /** Tests resizing after performing remove. */
+    @Test
+    public void removeResizeTest() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        for (int i = 0; i < 40; i++) {
+            ad1.addLast(i);
+        }
+
+        for (int i = 0; i < 5; i++) {
+            ad1.addFirst(i);
+        }
+
+        for (int i = 0; i < 20; i++) {
+            ad1.removeLast();
+        }
+
+        for (int i = 0; i < 20; i++) {
+            ad1.removeFirst();
+        }
+    }
+
+
 
     // TODO: Test that Generate type of items can be added
 
