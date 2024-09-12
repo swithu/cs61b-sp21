@@ -283,7 +283,37 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /** Returns whether the parameter o is equal to the Deque. */
+    @Override
     public boolean equals(Object o) {
-        return false;
+        // If they are actually the same object
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof ArrayDeque)) {
+            return false;
+        }
+
+        // Casting
+        ArrayDeque<T> other = (ArrayDeque<T>) o;
+        if (other.size() != this.size()) {
+            return false;
+        }
+
+        // Checks every item is equal in the same order
+        Iterator<T> thisIterator = this.iterator();
+        Iterator<T> otherIterator = other.iterator();
+
+        while (thisIterator.hasNext() && otherIterator.hasNext()) {
+            T thisItem = thisIterator.next();
+            T otherItem = otherIterator.next();
+
+            if (!(thisItem.equals(otherItem))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

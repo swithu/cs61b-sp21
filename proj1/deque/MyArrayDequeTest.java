@@ -218,7 +218,7 @@ public class MyArrayDequeTest {
         }
     }
 
-    /** Check if you can create ArrayDeque with different parameterized types*/
+    /** Checks if you can create ArrayDeque with different parameterized types*/
     @Test
     public void multipleParamTest() {
         ArrayDeque<String> ad1 = new ArrayDeque<>();
@@ -233,5 +233,24 @@ public class MyArrayDequeTest {
         double d = ad2.removeFirst();
         boolean b = ad3.removeFirst();
     }
+
+    /** Tests equals(). */
+    @Test
+    public void equalsTest() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        ArrayDeque<Integer> ad2 = new ArrayDeque<>();
+        ArrayDeque<Integer> ad3 = new ArrayDeque<>();
+
+        for (int i = 0; i < 100; i++) {
+            ad1.addLast(i);
+            ad2.addLast(i);
+            ad3.addLast(i);
+        }
+        ad3.addFirst(101);
+
+        assertTrue(ad1.equals(ad2));
+        assertFalse(ad1.equals(ad3));
+    }
+
 
 }
