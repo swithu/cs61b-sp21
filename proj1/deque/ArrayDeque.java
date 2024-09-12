@@ -1,8 +1,5 @@
 package deque;
 
-
-import org.hamcrest.internal.ArrayIterator;
-
 import java.util.Iterator;
 
 /** Deque powered by an Array. */
@@ -13,8 +10,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int capacity = 8;
     // Number of items in the array
     private int size;
-    // Track the usage of the array
-    private float usageFactor;
 
     // Tracks the positions of where to add the next item
     private int nextFirst;
@@ -144,7 +139,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * usageFactor < 0.25 may occur after a removing.
      */
     private boolean shouldResize(int afterSize) {
-        usageFactor = (float) afterSize / capacity;
+        // Track the usage of the array
+        float usageFactor = (float) afterSize / capacity;
         return (capacity > 16 && usageFactor < 0.25) || afterSize > capacity;
     }
 
