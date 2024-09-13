@@ -252,6 +252,30 @@ public class MyArrayDequeTest {
         assertFalse(ad1.equals(ad3));
     }
 
+    /** Tests enhanced for loop, i.e. iterator. */
+    @Test
+    public void iteratorTest() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+
+        for (int i = 0; i < 12; i++) {
+            ad1.addLast(i);
+        }
+        ad1.printDeque();
+
+        for (int i = 0; i < 2; i++) {
+            ad1.removeFirst();
+        }
+
+        for (int i = 0; i < 4; i++) {
+            ad1.addFirst(99);
+        }
+
+        ad1.printDeque();
+
+        for (int item : ad1) {
+            System.out.println(item);
+        }
+    }
 
 
     // TODO: Test get()

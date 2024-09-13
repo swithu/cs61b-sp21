@@ -43,19 +43,22 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     /** Iterator class for ArrayDeque. */
     private class ArrayDequeIterator implements Iterator<T> {
         private int pointer;
+        private int operation; // Tracks the operation times
 
         public ArrayDequeIterator() {
-            pointer = 0;
+            pointer = front;
+            operation = 0;
         }
 
         public T next() {
             T returnItem = items[pointer];
-            pointer += 1;
+            pointer = (pointer + 1) % capacity;
+            operation += 1;
             return returnItem;
         }
 
         public boolean hasNext() {
-            return pointer < size();
+            return operation < size;
         }
     }
 
