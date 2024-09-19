@@ -35,10 +35,10 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
             return null;
         }
 
-        // TODO: Fix this index picking issue.
-        int maxIndex = 0;
+        T maxItem = this.get(0); // Index 0 is where the front at
         for (T item : this) {
-            if (thisComparator.compare(item, this[maxIndex]) > 0) {
+            // Enhanced for loop will also start at the front
+            if (thisComparator.compare(item, maxItem) > 0) {
                 maxItem = item;
             }
         }
@@ -54,7 +54,7 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
     public T max(Comparator<T> c) {
         Comparator<T> otherComparator = c;
 
-        T maxItem = null;
+        T maxItem = this.get(0);
         for (T item : this) {
             if (otherComparator.compare(item, maxItem) > 0) {
                 maxItem = item;

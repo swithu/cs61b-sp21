@@ -1,5 +1,7 @@
 package deque;
 
+import afu.org.checkerframework.checker.oigj.qual.O;
+
 import java.util.Iterator;
 
 /** Deque powered by an Array. */
@@ -36,6 +38,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /** For making ArrayDeque iterable. */
+    @Override
     public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
@@ -50,6 +53,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             operation = 0;
         }
 
+        @Override
         public T next() {
             T returnItem = items[pointer];
             pointer = (pointer + 1) % capacity;
@@ -57,6 +61,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return returnItem;
         }
 
+        @Override
         public boolean hasNext() {
             return operation < size;
         }
@@ -85,6 +90,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * items: a  b  c           e  d
      *            back        front
      */
+    @Override
     public void addFirst(T item) {
         // Check whether the array needs to resize
         int afterSize = size + 1;
@@ -106,6 +112,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /** Adds an item of type T to position nextLast. */
+    @Override
     public void addLast(T item) {
         // Check if resize is necessary
         int afterSize = size + 1;
@@ -178,11 +185,13 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /** Returns TRUE if deque is empty, FALSE otherwise. */
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
     /** Returns the number of items in the deque. */
+    @Override
     public int size() {
         return size;
     }
@@ -191,6 +200,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * Prints the items in the deque from front to back, separated by a space.
      * Once all the items have been printed, prints out a new line.
      */
+    @Override
     public void printDeque() {
         StringBuilder SB = new StringBuilder();
 
@@ -206,6 +216,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     /** Removes and returns the item at the front of the deque.
      *  If no such item exists, returns NULL. */
+    @Override
     public T removeFirst() {
         int afterSize = size - 1;
 
@@ -231,6 +242,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     /** Removes and returns the item at the back of the deque.
      *  If no such item exists, returns NULL. */
+    @Override
     public T removeLast() {
         int afterSize = size - 1;
 
@@ -273,6 +285,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * actual index = (calling index + front) % capacity
      * e.g. when calling item c: 7 = (1 + 6) % 8
      */
+    @Override
     public T get(int index) {
         if (index >= size || index < 0) {
             return null;
