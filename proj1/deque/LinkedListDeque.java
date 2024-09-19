@@ -58,6 +58,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
      * Adds an item of type T to the front of the deque.
      * It should take constant time.
      */
+    @Override
     public void addFirst(T item) {
         sentinel.next = new Node(sentinel, item, sentinel.next);
 
@@ -70,6 +71,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
      * Adds an item of type T to the end of the deque.
      * It should take constant time.
      */
+    @Override
     public void addLast(T item) {
         sentinel.prev = new Node(sentinel.prev, item, sentinel);
 
@@ -79,11 +81,13 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /** Returns TRUE if deque is empty, FALSE otherwise. */
+    @Override
     public boolean isEmpty() {
         return (size == 0);
     }
 
     /** Returns the number of items in the deque. */
+    @Override
     public int size() {
         return size;
     }
@@ -92,6 +96,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
      * Prints the items in the deque from first to last, separated by a space.
      * Once all the items have been printed, prints out a new line.
      */
+    @Override
     public void printDeque() {
         StringBuilder stringBuilder = new StringBuilder();
         for (T item : this) {
@@ -106,6 +111,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
      * Removes and returns the item at the front of the deque.
      * If no such item exists, returns NULL.
      */
+    @Override
     public T removeFirst() {
         if (isEmpty()) {
             return null;
@@ -133,6 +139,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
      * Removes and returns the item at the back of the deque.
      * If no such item exists, returns NULL.
      */
+    @Override
     public T removeLast() {
         if (isEmpty()) {
             return null;
@@ -162,6 +169,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
      * 1 is the next item and so forth.
      * If no such item exists, return NULL.
      */
+    @Override
     public T get(int index) {
         // Creates a pointer pointing at sentinel
         Node pointer = sentinel;
@@ -262,6 +270,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /** Returns an iterator. */
+    @Override
     public Iterator<T> iterator() {
         return new LinkedListIterator();
     }
@@ -279,6 +288,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             pointer = sentinel.next;
         }
 
+        @Override
         public T next() {
             T returnItem = pointer.item;
             position++;
@@ -286,6 +296,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             return returnItem;
         }
 
+        @Override
         public boolean hasNext() {
             return (position < size);
         }
