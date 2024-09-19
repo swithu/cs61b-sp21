@@ -184,12 +184,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         nextLast = size;
     }
 
-    /** Returns TRUE if deque is empty, FALSE otherwise. */
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
     /** Returns the number of items in the deque. */
     @Override
     public int size() {
