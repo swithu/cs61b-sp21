@@ -10,12 +10,12 @@ import java.util.Iterator;
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     /** Class of Node, which is an element of Link List. */
     private class Node {
-        public Node prev;
-        public T item;
-        public Node next;
+        private Node prev;
+        private T item;
+        private Node next;
 
         /** Constructor of Node class. */
-        public Node(Node p, T i, Node n) {
+        Node(Node p, T i, Node n) {
             prev = p;
             item = i;
             next = n;
@@ -277,7 +277,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
          * Sets a pointer that starts at the first item,
          * counts the current position as index 0.
          */
-        public LinkedListIterator() {
+        LinkedListIterator() {
             position = 0;
             pointer = sentinel.next;
         }

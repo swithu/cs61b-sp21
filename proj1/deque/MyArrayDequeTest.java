@@ -200,17 +200,20 @@ public class MyArrayDequeTest {
                 std.add(randVal); // Uses add(item) to mimic addLast
                 assertEquals(ad1.size(), std.size());
                 System.out.println("addLast(" + randVal + ")");
-            } else if (ope == 2 && !std.isEmpty()) { // Will get into NullPointerError without this [&& std.size() > 0]
+            } else if (ope == 2 && !std.isEmpty()) {
+                // Will get into NullPointerError without this [&& std.size() > 0]
                 // removeFirst
                 int firstInAd1 = ad1.removeFirst();
                 int firstInStd = std.remove(0); // Uses remove(0) to mimic removeFirst
                 assertEquals(ad1.size(), std.size());
                 assertEquals(firstInAd1, firstInStd);
                 System.out.println("removeFirst(" + firstInAd1 + ")");
-            } else if (ope == 3 && !std.isEmpty()) { // Will get into NullPointerError without this [&& std.size() > 0]
+            } else if (ope == 3 && !std.isEmpty()) {
+                // Will get into NullPointerError without this [&& std.size() > 0]
                 // removeLast
-                int lastInAd1= ad1.removeLast();
-                int lastInStd = std.remove(std.size() - 1); // Uses remove(size - 1) to mimic removeLast
+                int lastInAd1 = ad1.removeLast();
+                // Uses remove(size - 1) to mimic removeLast
+                int lastInStd = std.remove(std.size() - 1);
                 assertEquals(ad1.size(), std.size());
                 assertEquals(lastInAd1, lastInStd);
                 System.out.println("removeFirst(" + lastInAd1 + ")");
@@ -276,8 +279,5 @@ public class MyArrayDequeTest {
             System.out.println(item);
         }
     }
-
-
-    // TODO: Test get()
 
 }

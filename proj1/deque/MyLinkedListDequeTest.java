@@ -86,5 +86,4 @@ public class MyLinkedListDequeTest {
         assertEquals(50, (long) deque.getRecursive(50));
     }
 
-    // TODO: Add randomized and timing test
 }

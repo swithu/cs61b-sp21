@@ -1,7 +1,5 @@
 package deque;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
-
 import java.util.Iterator;
 
 /** Deque powered by an Array. */
@@ -49,7 +47,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         private int pointer;
         private int operation; // Tracks the operation times
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             pointer = front;
             operation = 0;
         }
@@ -107,7 +105,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         // Resets pointers
         // Code below works no matter the front has looped back around or not.
         front = nextFirst;
-        nextFirst = (front - 1 + capacity) % capacity; // Writing (front - 1) % capacity will bug when front == 0
+        // Writing (front - 1) % capacity will bug when front == 0
+        nextFirst = (front - 1 + capacity) % capacity;
         back = (front + size - 1) % capacity;
         nextLast = (back + 1) % capacity;
     }
@@ -197,15 +196,15 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      */
     @Override
     public void printDeque() {
-        StringBuilder SB = new StringBuilder();
+        StringBuilder sB = new StringBuilder();
 
         int pointer = front;
         for (int i = 0; i < size; i++) {
-            SB.append(items[pointer]);
-            SB.append(' ');
+            sB.append(items[pointer]);
+            sB.append(' ');
             pointer = (pointer + 1) % capacity;
         }
-        System.out.println(SB.toString().trim());
+        System.out.println(sB.toString().trim());
         System.out.println(' ');
     }
 
