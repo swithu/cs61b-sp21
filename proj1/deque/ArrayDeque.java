@@ -26,6 +26,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     /** Constructor. */
     public ArrayDeque() {
+        // Initial capacity of an array is 8
         items = (T[]) new Object[capacity];
         size = 0;
 
