@@ -302,7 +302,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return false;
         }
 
-        // Casting
+        // Casts the Object to Deque
         Deque<T> other = (Deque<T>) o;
         if (other.size() != this.size()) {
             return false;
@@ -310,7 +310,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         // Checks every item is equal in the same order
         Iterator<T> thisIterator = this.iterator();
-        Iterator<T> otherIterator = other.iterator();
+        Iterator<T> otherIterator =((Iterable<T>) other).iterator();
 
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
             T thisItem = thisIterator.next();

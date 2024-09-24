@@ -46,6 +46,6 @@ public interface Deque<T> {
     /** Returns whether the parameter o is equal to the Deque. */
     boolean equals(Object o);
 
-    /** Returns an iterator. The Deque objects are iterable. */
-    Iterator<T> iterator();
+//    /** Returns an iterator. The Deque objects are iterable. */
+//    Iterator<T> iterator();
 }
