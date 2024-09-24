@@ -47,12 +47,13 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         size = 0;
     }
 
-    public LinkedListDeque(T item) {
-        sentinel = new Node(null, null, null);
-        sentinel.next = new Node(sentinel, item, sentinel);
-        sentinel.prev = sentinel.next;
-        size = 1;
-    }
+    // This constructor is never used, so comment it out
+//    public LinkedListDeque(T item) {
+//        sentinel = new Node(null, null, null);
+//        sentinel.next = new Node(sentinel, item, sentinel);
+//        sentinel.prev = sentinel.next;
+//        size = 1;
+//    }
 
     /**
      * Adds an item of type T to the front of the deque.
@@ -238,12 +239,12 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         if (o == null) {
             return false;
         }
-        if (!(o instanceof LinkedListDeque)) {
+        if (!(o instanceof Deque)) {
             return false;
         }
 
         // Casting
-        LinkedListDeque<T> other = (LinkedListDeque<T>) o;
+        Deque<T> other = (Deque<T>) o;
         if (other.size() != this.size()) {
             return false;
         }
