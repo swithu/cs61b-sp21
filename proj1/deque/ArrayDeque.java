@@ -310,13 +310,21 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         // Checks every item is equal in the same order
         Iterator<T> thisIterator = this.iterator();
-        Iterator<T> otherIterator =((Iterable<T>) other).iterator();
+        Iterator<T> otherIterator = ((Iterable<T>) other).iterator();
 
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
             T thisItem = thisIterator.next();
             T otherItem = otherIterator.next();
 
-            if (!(thisItem.equals(otherItem))) {
+            // Handles null cases
+            if (thisItem == null && otherItem != null) {
+                return false;
+            }
+            if (thisItem != null && otherItem == null) {
+                return false;
+            }
+            if (thisItem != null
+                    && !(thisItem.equals(otherItem))) {
                 return false;
             }
         }
