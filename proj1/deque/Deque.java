@@ -1,7 +1,5 @@
 package deque;
 
-import java.util.Iterator;
-
 /** Interface representing a generic DEQUE. */
 public interface Deque<T> {
     /** Adds an item of type T to the front of the deque. */
